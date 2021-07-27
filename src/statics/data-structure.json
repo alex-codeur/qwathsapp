@@ -12,7 +12,7 @@
         }
     },
     "chats": {
-        "USERDI1": {
+        "USERID1": {
             "USERID2": {
                 "MESSAGEID1": {
                     "text": "Hi how are you?",
@@ -24,7 +24,7 @@
                 }
             }
         },
-        "USERDI2": {
+        "USERID2": {
             "USERID1": {
                 "MESSAGEID1": {
                     "text": "Hi how are you?",

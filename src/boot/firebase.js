@@ -7,6 +7,7 @@ var firebaseConfig = {
   apiKey: "AIzaSyDAQ-cNdgeUY_78TlXQ0ZyAonJy3lpFYlg",
   authDomain: "qwathsapp.firebaseapp.com",
   projectId: "qwathsapp",
+  databaseURL: "https://qwathsapp-default-rtdb.europe-west1.firebasedatabase.app/",
   storageBucket: "qwathsapp.appspot.com",
   messagingSenderId: "218457037277",
   appId: "1:218457037277:web:810354ae21280093a47e34"
