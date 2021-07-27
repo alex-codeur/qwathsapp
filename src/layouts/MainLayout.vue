@@ -2,9 +2,18 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
+        <q-btn to="/" icon="arrow_back" flat dense label="Back" />
         <q-toolbar-title class="absolute-center">
           {{ title }}
         </q-toolbar-title>
+        <q-btn
+          to="/auth"
+          class="absolute-center login"
+          icon="account_circle"
+          flat
+          dense
+          label="Login"
+        />
       </q-toolbar>
     </q-header>
 
@@ -21,7 +30,6 @@ import { openURL } from "quasar";
 export default defineComponent({
   computed: {
     title() {
-      console.log(this.$route);
       let currentPath = this.$route.fullPath;
       if (currentPath == "/") return "Qwathsapp";
       else if (currentPath == "/chat") return "Chat";
@@ -33,3 +41,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="sass">
+.login
+  margin-right: 0
+  margin-left: 100px
+</style>>
