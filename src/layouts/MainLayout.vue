@@ -7,6 +7,7 @@
           {{ title }}
         </q-toolbar-title>
         <q-btn
+          v-if="!userDetails.userId"
           to="/auth"
           class="absolute-center login"
           icon="account_circle"
@@ -14,6 +15,17 @@
           dense
           label="Login"
         />
+        <q-btn
+          v-else
+          @click="logoutUser"
+          class="absolute-center login"
+          icon="account_circle"
+          flat
+          dense
+        >
+          Logout<br />
+          {{ userDetails.name }}
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -25,10 +37,11 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { openURL } from "quasar";
+import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
   computed: {
+    ...mapState("store", ["userDetails"]),
     title() {
       let currentPath = this.$route.fullPath;
       if (currentPath == "/") return "Qwathsapp";
@@ -37,7 +50,7 @@ export default defineComponent({
     },
   },
   methods: {
-    openURL,
+    ...mapActions("store", ["logoutUser"]),
   },
 });
 </script>
@@ -46,4 +59,7 @@ export default defineComponent({
 .login
   margin-right: 0
   margin-left: 100px
+.q-toolbar
+  .q-btn
+    line-height: 1.2
 </style>>
