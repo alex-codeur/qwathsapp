@@ -38,34 +38,35 @@
 
 <script>
 import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
   data() {
     return {
       newMessage: "",
-      messages: [
-        {
-          text: "Hey Jim, how are you?",
-          from: "me",
-        },
-        {
-          text: "Good thanks, Alex! How are you?",
-          from: "them",
-        },
-        {
-          text: "Pretty good!",
-          from: "me",
-        },
-      ],
     };
   },
+  computed: {
+    ...mapState("store", ["messages"]),
+  },
   methods: {
+    ...mapActions("store", [
+      "firebaseGetMessages",
+      "firebaseStopGettingMessages",
+    ]),
     sendMessage() {
       this.messages.push({
         text: this.newMessage,
         from: "me",
       });
     },
+  },
+  mounted() {
+    // console.log(this.$route.params.otherUserId);
+    this.firebaseGetMessages(this.$route.params.otherUserId);
+  },
+  unmounted() {
+    this.firebaseStopGettingMessages();
   },
 });
 </script>

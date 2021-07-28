@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import { firebaseAuth, firebaseDb } from "src/boot/firebase"
 
+let messagesRef
+
 const state = {
     userDetails: {},
-    users: {}
+    users: {},
+    messages: {}
 }
 const mutations = {
     setUserDetails(state, payload) {
@@ -15,6 +18,13 @@ const mutations = {
     },
     updateUser(state, payload) {
         Object.assign(state.users[payload.userId], payload.userDetails)
+    },
+    addMessage(state, payload) {
+        state.messages[payload.messageId] = payload.messageDetails
+        // Vue.set(state.messages, payload.messageId, payload.messageDetails)
+    },
+    clearMessages(state) {
+        state.messages = {}
     }
 }
 const actions = {
@@ -37,7 +47,7 @@ const actions = {
     loginUser({ }, payload) {
         firebaseAuth.signInWithEmailAndPassword(payload.email, payload.password)
             .then(response => {
-                console.log(response)
+                // console.log(response)
             })
             .catch(error => {
                 console.log(error.message)
@@ -52,9 +62,9 @@ const actions = {
                 // User is logged in.
                 let userId = firebaseAuth.currentUser.uid
                 firebaseDb.ref('users/' + userId).once('value', snapshot => {
-                    console.log('snapshot', snapshot)
+                    // console.log('snapshot', snapshot)
                     let userDetails = snapshot.val()
-                    console.log('userDetails', userDetails)
+                    // console.log('userDetails', userDetails)
                     commit('setUserDetails', {
                         name: userDetails.name,
                         email: userDetails.email,
@@ -104,6 +114,24 @@ const actions = {
                 userDetails
             })
         })
+    },
+    firebaseGetMessages({ commit, state }, otherUserId) {
+        let userId = state.userDetails.userId
+        messagesRef = firebaseDb.ref('chats/' + userId + '/' + otherUserId)
+        messagesRef.on('child_added', snapshot => {
+            let messageDetails = snapshot.val()
+            let messageId = snapshot.key
+            commit('addMessage', {
+                messageId,
+                messageDetails
+            })
+        })
+    },
+    firebaseStopGettingMessages({ commit }) {
+        if (messagesRef) {
+            messagesRef.off('child_added')
+            commit('clearMessages')
+        }
     }
 }
 const getters = {
