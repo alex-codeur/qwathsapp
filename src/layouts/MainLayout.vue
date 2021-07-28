@@ -38,14 +38,16 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { mapActions, mapState } from "vuex";
+import mixinOtherUserDetails from "src/mixins/mixin-other-user-details";
 
 export default defineComponent({
+  mixins: [mixinOtherUserDetails],
   computed: {
     ...mapState("store", ["userDetails"]),
     title() {
       let currentPath = this.$route.fullPath;
       if (currentPath == "/") return "Qwathsapp";
-      else if (currentPath == "/chat") return "Chat";
+      else if (currentPath.includes("/chat")) return this.otherUserDetails.name;
       else if (currentPath == "/auth") return "Login";
     },
   },
